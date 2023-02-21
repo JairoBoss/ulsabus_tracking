@@ -7,6 +7,7 @@ import Profile from "../screens/Profile";
 import { FontAwesome } from "@expo/vector-icons";
 import { Colors } from "../constants/Color";
 import { Pressable } from "react-native";
+import Rutas from "../screens/Rutas";
 
 const BottomTabNavigator = createBottomTabNavigator();
 
@@ -28,7 +29,6 @@ export default function BottomTab({ navigation }) {
               size={30}
               color={Colors.secondary}
               style={{ marginLeft: 15 }}
-              size={28}
             />
           </Pressable>
         ),
@@ -43,6 +43,17 @@ export default function BottomTab({ navigation }) {
           ),
         }}
       />
+      
+      <BottomTabNavigator.Screen
+        name="Rutas"
+        component={Rutas}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome name="bus" size={30} color={color} />
+          ),
+        }}
+      />
+
       <BottomTabNavigator.Screen
         name="Profile"
         component={Profile}

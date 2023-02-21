@@ -34,7 +34,7 @@ export class UserRoleGuard implements CanActivate {
       }
     }
     throw new ForbiddenException(
-      `User: ${user.fullName} no tiene los permisos necesarios`,
+      `User: ${user.name} no tiene los permisos necesarios`,
     );
   }
 }

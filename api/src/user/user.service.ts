@@ -68,7 +68,7 @@ export class UserService {
 
     if (id !== user.id)
       throw new ForbiddenException(
-        `${user.fullName} no tiene los permisos necesarios`,
+        `${user.name} no tiene los permisos necesarios`,
       );
 
     return usuario;

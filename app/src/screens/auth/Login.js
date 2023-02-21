@@ -12,8 +12,7 @@ import SvgUser from "../../svgs/SignIn/SvgUser";
 import colors from "../../utils/colors";
 import { scaleHeight, scaleWidth } from "../../utils/size";
 import FONTS from "../../utils/fonts";
-import { getBottomSpace } from 'react-native-iphone-x-helper';
-
+import { getBottomSpace } from "react-native-iphone-x-helper";
 
 export default function Login({ navigation }) {
   const [token, setToken] = useState("");

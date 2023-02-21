@@ -18,7 +18,14 @@ export class SeedService {
       email: 'admin@gmail.com',
       password: bcrypt.hashSync('A1b2c3', 10),
       roles: ['admin', 'chofer', 'user'],
-      fullName: 'Jairo Esteban Martinez Portillo',
+      name: 'Jairo',
+      last_name: 'Martinez',
+      second_last_name: 'Portillo',
+      telefono: '+52 951 4268601',
+      direccion: 'Av. siempre viva, Colonia Benito Camela, No 666, CP. 801',
+      fecha_nacimiento: "01-08-2001",
+      identificacion: 'asdasdasd'
+ 
     });
 
     const user = await this.userRepository.findOne({

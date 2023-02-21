@@ -30,8 +30,7 @@ export default function Stack() {
       <StackNavigator.Group screenOptions={{ headerShown: true }}>
         <StackNavigator.Screen
           name="Settings"
-          component={Settings}
-         
+          component={Settings}     
         />
       </StackNavigator.Group>
     </StackNavigator.Navigator>

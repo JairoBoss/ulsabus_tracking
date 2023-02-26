@@ -23,13 +23,13 @@ export class CreateParadaDto {
     isArray: true,
   })
   @IsArray()
-  @IsString({ each: true })
-  coordenadas: string[];
+  @IsNumber({},{each:true})
+  coordenadas: number[];
 
   @ApiProperty({
     description: 'ID de la parada',
     nullable: false,
   })
   @IsString()
-  id_parada: string;
+  ruta_id: string;
 }

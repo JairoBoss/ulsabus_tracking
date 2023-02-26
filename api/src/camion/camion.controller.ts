@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger/dist';
-import { ApiResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
+import { ApiOkResponse, ApiResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { ValidRoles } from 'src/auth/dto/valid-roles.interface';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
@@ -32,12 +32,16 @@ export class CamionController {
   }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'Camiones obtenidos por paginacion', type: Array<Camion> })
+  @ApiOkResponse({
+    description: 'Camiones paginados',
+    type: Camion,
+    isArray: true,
+  })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @Auth(ValidRoles.chofer)
   findAll(paginationDto: PaginationDto) {
-    return this.camionService.findAll();
+    return this.camionService.findAll(paginationDto);
   }
 
   @ApiResponse({ status: 200, description: 'Camion obtenido por UUID, nombre o slug', type: Camion })
@@ -45,18 +49,18 @@ export class CamionController {
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.camionService.findOne(+id);
+    return this.camionService.findOne(id);
   }
 
   @Patch(':id')
   @Auth(ValidRoles.admin)
   update(@Param('id') id: string, @Body() updateCamionDto: UpdateCamionDto) {
-    return this.camionService.update(+id, updateCamionDto);
+    return this.camionService.update(id, updateCamionDto);
   }
 
   @Delete(':id')
   @Auth(ValidRoles.user)
   remove(@Param('id') id: string) {
-    return this.camionService.remove(+id);
+    return this.camionService.remove(id);
   }
 }

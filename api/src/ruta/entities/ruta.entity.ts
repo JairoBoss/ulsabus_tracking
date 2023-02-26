@@ -98,7 +98,7 @@ export class Ruta {
       this.slug = this.nombre;
     }
 
-    this.slug = this.slug
+    this.slug = this.nombre
       .toLocaleLowerCase()
       .replaceAll("'", '')
       .replaceAll(' ', '_');

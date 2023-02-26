@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { CreateRutaDto } from './dto/create-ruta.dto';
 import { UpdateRutaDto } from './dto/update-ruta.dto';
 
@@ -8,7 +9,7 @@ export class RutaService {
     return 'This action adds a new ruta';
   }
 
-  findAll() {
+  findAll(paginationDto: PaginationDto) {
     return `This action returns all ruta`;
   }
 

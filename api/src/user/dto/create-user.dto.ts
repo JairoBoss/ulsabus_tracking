@@ -1,5 +1,7 @@
 import {
   IsArray,
+  IsBoolean,
+  IsDate,
   isEmail,
   IsEmail,
   IsIn,
@@ -15,7 +17,6 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'Correo del usuario',
     nullable: false,
-    minLength: 1,
   })
   @IsEmail()
   email: string;
@@ -29,20 +30,64 @@ export class CreateUserDto {
   @IsString()
   @MinLength(6)
   @MaxLength(50)
-  // @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-  //   message:
-  //     'The password must have a Uppercase, lowercase letter and a number',
-  // })
   password: string;
 
   @ApiProperty({
     description: 'Nombre del usuario',
     nullable: false,
-    minLength: 1,
   })
   @IsString()
-  @MinLength(1)
-  fullName: string;
+  name: string;
+
+  @ApiProperty({
+    description: 'Apellido paterno',
+    nullable: false,
+  })
+  @IsString()
+  last_name: string;
+
+  @ApiProperty({
+    description: 'Apellido materno',
+    nullable: false,
+  })
+  @IsString()
+  second_last_name: string;
+
+  @ApiProperty({
+    description: 'Numero telefonico',
+    nullable: false,
+  })
+  @IsString()
+  phone: string;
+
+  @ApiProperty({
+    description: 'Direccion',
+    nullable: false,
+  })
+  @IsString()
+  address: string;
+
+  @ApiProperty({
+    description: 'Fecha de nacimiento',
+    nullable: false,
+  })
+  @IsDate()
+  birth_date: string;
+
+  @ApiProperty({
+    description: 'ID del identificacion del usuario',
+    nullable: false,
+  })
+  @IsString()
+  id_card: string;
+
+  @ApiProperty({
+    description: 'Si el usuario esta activo o no',
+    nullable: true,
+  })
+  @IsBoolean()
+  @IsOptional()
+  isActive: boolean;
 
   @ApiProperty({
     description: "Roles del usuario ['chofer', 'user', 'admin']",
@@ -51,7 +96,6 @@ export class CreateUserDto {
   })
   @IsString({ each: true })
   @IsArray()
-  // @IsIn(['chofer', 'user', 'admin'])
   @IsOptional()
   roles: string[];
 }

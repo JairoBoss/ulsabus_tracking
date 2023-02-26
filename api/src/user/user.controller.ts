@@ -17,7 +17,9 @@ import { ValidRoles } from '../auth/dto/valid-roles.interface';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { User } from './entities/user.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Usuarios')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}

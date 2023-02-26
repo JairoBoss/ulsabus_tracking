@@ -51,7 +51,7 @@ export class UserService {
       take: limit,
       skip: offset,
       order: {
-        createdAt: "ASC",
+        createdAt: 'ASC',
       },
     });
 

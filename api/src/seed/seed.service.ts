@@ -21,11 +21,10 @@ export class SeedService {
       name: 'Jairo',
       last_name: 'Martinez',
       second_last_name: 'Portillo',
-      telefono: '+52 951 4268601',
-      direccion: 'Av. siempre viva, Colonia Benito Camela, No 666, CP. 801',
-      fecha_nacimiento: "01-08-2001",
-      identificacion: 'asdasdasd'
- 
+      phone: '+52 951 4268601',
+      address: 'Av. siempre viva, Colonia Benito Camela, No 666, CP. 801',
+      birth_date: '01-08-2001',
+      id_card: 'asdasdasd',
     });
 
     const user = await this.userRepository.findOne({

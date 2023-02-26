@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger/dist/decorators/api-property.decorator';
+import { Camion } from 'src/camion/entities/camion.entity';
+import { Guardado } from 'src/guardado/entities/guardado.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -64,7 +67,7 @@ export class User {
     nullable: false,
   })
   @Column({ type: 'text' })
-  telefono: string;
+  phone: string;
 
   @ApiProperty({
     example: 'Av. siempre viva, Colonia Benito Camela, No 666, CP. 801',
@@ -72,7 +75,7 @@ export class User {
     nullable: true,
   })
   @Column({ type: 'text' })
-  direccion: string;
+  address: string;
 
   @ApiProperty({
     example: '01-08-2001',
@@ -80,7 +83,7 @@ export class User {
     nullable: true,
   })
   @Column({ type: 'date' })
-  fecha_nacimiento: Date;
+  birth_date: Date;
 
   @ApiProperty({
     example: '46402c89749d53f7b6fb35bb8095bc31',
@@ -88,7 +91,7 @@ export class User {
     nullable: true,
   })
   @Column({ type: 'text' })
-  identificacion: String;
+  id_card: String;
 
   @ApiProperty({
     example: 'true or false',
@@ -105,6 +108,12 @@ export class User {
   })
   @Column({ type: 'text', array: true, default: ['user'] })
   roles: string[];
+
+  @OneToMany(() => Camion, (camion) => camion.ruta)
+  camion: Camion;
+
+  @OneToMany(() => Guardado, (guardado) => guardado.user)
+  guardado: Guardado;
 
   @ApiProperty({
     example: '2023-02-14 16:28:47',

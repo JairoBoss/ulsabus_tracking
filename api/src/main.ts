@@ -11,9 +11,6 @@ async function bootstrap() {
 
   const logger = new Logger('Bootstrap');
 
-  // TODO : Acompletar el seed y hacer un metodo estatiuco para no instanciar la clase
-  // Y poner el logger chido
-
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
@@ -31,8 +28,6 @@ async function bootstrap() {
     .setTitle('Bus tracking API')
     .setDescription('Bus tracking endpoints')
     .setVersion('1.0')
-    // .addTag('cats')
-    // .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

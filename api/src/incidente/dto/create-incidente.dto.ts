@@ -1,39 +1,39 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class CreateCamionDto {
+export class CreateIncidenteDto {
   @ApiProperty({
-    description: 'Numero de serie para el camion',
+    description: 'Tipo de incidente que ocurrio',
     nullable: false,
   })
   @IsString()
-  no_serie: string;
+  tipo: string;
 
   @ApiProperty({
-    description: 'Placas del camion camion',
+    description: 'Coordenadas de donde ocurrio',
     nullable: false,
   })
   @IsString()
-  placas: string;
+  coordenadas: string;
 
   @ApiProperty({
-    description: 'Placas del camion camion',
+    description: 'ID de la foto',
     nullable: false,
   })
   @IsString()
   foto_id: string;
 
   @ApiProperty({
-    description: 'Placas del camion camion',
+    description: 'Breve descripcion de lo que ocurrio ',
     nullable: false,
   })
   @IsString()
-  ruta_id: string;
+  descripcion: string;
 
   @ApiProperty({
-    description: 'Placas del camion camion',
+    description: 'ID del camion',
     nullable: false,
   })
   @IsString()
-  user_id: string;
+  camion_id: string;
 }

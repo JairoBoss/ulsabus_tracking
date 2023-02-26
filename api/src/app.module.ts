@@ -8,6 +8,10 @@ import { CommonModule } from './common/common.module';
 import { LoggerMiddleware } from './utils/logger.middleware';
 import { CamionModule } from './camion/camion.module';
 import { RutaModule } from './ruta/ruta.module';
+import { ParadaModule } from './parada/parada.module';
+import { UbicacionModule } from './ubicacion/ubicacion.module';
+import { IncidenteModule } from './incidente/incidente.module';
+import { GuardadoModule } from './guardado/guardado.module';
 
 @Module({
   imports: [
@@ -28,6 +32,10 @@ import { RutaModule } from './ruta/ruta.module';
     CommonModule,
     CamionModule,
     RutaModule,
+    ParadaModule,
+    UbicacionModule,
+    IncidenteModule,
+    GuardadoModule,
   ],
   controllers: [],
   providers: [],

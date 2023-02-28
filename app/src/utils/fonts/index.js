@@ -17,7 +17,7 @@ const FONTS_APP = {
   Hind: {
     Bold: 'Hind-Bold',
     SemiBold: 'Hind-SemiBold',
-    Regular: 'Hind-Regular',
+    // Regular: 'Hind-Regular',
     Medium: 'Hind-Medium',
     Light: 'Hind-Light',
   },

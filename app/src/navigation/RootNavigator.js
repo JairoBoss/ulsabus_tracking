@@ -32,7 +32,7 @@ export default function RootNavigator() {
     }
   };
 
-  if(isLoading) return <Splash/>
+  if (isLoading) return <Splash />;
 
   return (
     <NavigationContainer>

@@ -5,6 +5,7 @@ import { store } from "./src/app/store";
 import RootNavigator from "./src/navigation/RootNavigator";
 import { useEffect } from "react";
 import { Platform, StatusBar } from "react-native";
+import FlashMessage from "react-native-flash-message";
 
 export default function App() {
 
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <RootNavigator />
+      <FlashMessage position="top" /> 
     </Provider>
   );
 }

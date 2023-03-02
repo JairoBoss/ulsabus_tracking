@@ -4,7 +4,6 @@ import { TextInput as Input } from "react-native-paper";
 import { theme } from "../core/theme";
 
 export default function TextInput({ errorText, description, ...props }) {
-
   return (
     <View style={styles.container}>
       <Input
@@ -28,7 +27,10 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   input: {
-    backgroundColor: theme.colors.surface,
+    backgroundColor: "#fef9f6",
+    borderRadius: 5,
+    borderColor: '#dce4f7',
+    selectionColor: 'red'
   },
   description: {
     fontSize: 13,

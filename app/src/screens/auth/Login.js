@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import Background from "../../components/Background";
-import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
@@ -10,13 +8,22 @@ import BackButton from "../../components/BackButton";
 import { theme } from "../../core/theme";
 import { emailValidator } from "../../helpers/emailValidator";
 import { passwordValidator } from "../../helpers/passwordValidator";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { showMessage } from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { signIn } from "../../features/auth/auth";
+import { login } from "../../services/authService";
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: "", error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
+  const dispatch = useDispatch();
+  // const [login, { isLoading, onError }] = useLoginMutation();
 
-  const onLoginPressed = () => {
+  const { isLoading } = useSelector((state) => state.auth);
+
+  const [email, setEmail] = useState({ value: "admin@gmail.com", error: "" });
+  const [password, setPassword] = useState({ value: "A1b2c3", error: "" });
+
+  const onLoginPressed = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
     if (emailError || passwordError) {
@@ -24,67 +31,90 @@ export default function LoginScreen({ navigation }) {
       setPassword({ ...password, error: passwordError });
       return;
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Dashboard" }],
-    });
+
+    try {
+      // const response = await login({
+      // email: email.value,
+      // password: password.value,
+      // }).unwrap();
+
+      // const value = "response?.token;";
+
+      dispatch(login({ email: email.value, password: password.value }));
+    } catch (error) {
+      console.log(error);
+      return showMessage({
+        message: "Datos no válidos",
+        type: "warning",
+      });
+    }
   };
 
   return (
     // <Background>
 
-    <View
-      style={{
-        flex: 1,
-        // padding: 20,
-        width: "100%",
-        maxWidth: 340,
-        alignSelf: "center",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundImage: 'url("../../assets/background_dot.png")',
-        resizeMode: "repeat",
-      }}
-    >
-      <BackButton goBack={navigation.goBack} />
-      {/* <Logo /> */}
-      <Header>Welcome back.</Header>
-      <TextInput
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: "" })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: "" })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("ResetPasswordScreen")}
-        >
-          <Text style={styles.forgot}>Forgot your password?</Text>
-        </TouchableOpacity>
-      </View>
-      <Button mode="contained" onPress={onLoginPressed}>
-        Login
-      </Button>
-      <View style={styles.row}>
-        <Text>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace("RegisterScreen")}>
-          <Text style={styles.link}>Sign up</Text>
-        </TouchableOpacity>
+    <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
+      {/* F9F9F9 */}
+      <View
+        style={{
+          flex: 1,
+          // padding: 20,
+          width: "100%",
+          maxWidth: 340,
+          alignSelf: "center",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundImage: 'url("../../assets/background_dot.png")',
+          resizeMode: "repeat",
+        }}
+      >
+        <BackButton goBack={navigation.goBack} />
+        {/* <Logo /> */}
+        <Header>Bienvenido</Header>
+
+        <View style={styles.row}>
+          <Text>Inicia sesión</Text>
+        </View>
+
+        <TextInput
+          label="Correo"
+          returnKeyType="next"
+          value={email.value}
+          onChangeText={(text) => setEmail({ value: text, error: "" })}
+          error={!!email.error}
+          errorText={email.error}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+        <TextInput
+          label="Contraseña"
+          returnKeyType="done"
+          value={password.value}
+          onChangeText={(text) => setPassword({ value: text, error: "" })}
+          error={!!password.error}
+          errorText={password.error}
+          secureTextEntry
+        />
+        <View style={styles.forgotPassword}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
+            <Text style={styles.forgot}>Olvidaste tu contraseña?</Text>
+          </TouchableOpacity>
+        </View>
+        <Button mode="contained" onPress={onLoginPressed} loading={isLoading}>
+          Ingresar
+        </Button>
+        {/* <View style={styles.row}>
+          <Text>Don’t have an account? </Text>
+          <TouchableOpacity
+            onPress={() => navigation.replace("RegisterScreen")}
+          >
+            <Text style={styles.link}>Sign up</Text>
+          </TouchableOpacity>
+        </View> */}
       </View>
     </View>
     // </Background>

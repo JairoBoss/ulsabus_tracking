@@ -10,7 +10,7 @@ import { restoreToken } from "../features/auth/auth";
 import Splash from "../screens/Splash";
 
 export default function RootNavigator() {
-  const { userToken, isLoading } = useSelector((state) => state.auth);
+  const { userToken, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export default function RootNavigator() {
         console.log("Informacion restaurada", value);
         dispatch(restoreToken(value));
       } else {
-        console.log("No data");
         dispatch(restoreToken(null));
       }
     } catch (error) {
@@ -32,7 +31,7 @@ export default function RootNavigator() {
     }
   };
 
-  if (isLoading) return <Splash />;
+  if (loading) return <Splash />;
 
   return (
     <NavigationContainer>

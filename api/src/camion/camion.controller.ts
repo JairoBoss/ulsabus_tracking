@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { Query } from '@nestjs/common/decorators';
 import { ApiTags } from '@nestjs/swagger/dist';
 import { ApiOkResponse, ApiResponse } from '@nestjs/swagger/dist/decorators/api-response.decorator';
 import { Auth } from 'src/auth/decorators/auth.decorator';
@@ -40,7 +41,7 @@ export class CamionController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @Auth(ValidRoles.chofer)
-  findAll(paginationDto: PaginationDto) {
+  findAll(@Query() paginationDto: PaginationDto) {
     return this.camionService.findAll(paginationDto);
   }
 

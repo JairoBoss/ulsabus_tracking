@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RutaModule } from 'src/ruta/ruta.module';
 import { UserModule } from 'src/user/user.module';
 import { Camion } from './entities/camion.entity';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
   controllers: [CamionController],
@@ -15,6 +16,7 @@ import { Camion } from './entities/camion.entity';
     RutaModule,
     UserModule,
     TypeOrmModule.forFeature([Camion]),
+    CommonModule
   ],
 })
 export class CamionModule {}

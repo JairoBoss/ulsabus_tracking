@@ -12,6 +12,7 @@ import { ParadaModule } from './parada/parada.module';
 import { UbicacionModule } from './ubicacion/ubicacion.module';
 import { IncidenteModule } from './incidente/incidente.module';
 import { GuardadoModule } from './guardado/guardado.module';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { GuardadoModule } from './guardado/guardado.module';
     UbicacionModule,
     IncidenteModule,
     GuardadoModule,
+    S3Module,
   ],
   controllers: [],
   providers: [],

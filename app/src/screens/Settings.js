@@ -6,7 +6,7 @@ import { globalStyle } from "../styles/Global";
 export default function Settings() {
   return (
     <View style={globalStyle.screenContainer}>
-      <Text style={globalStyle.title}>Settings</Text>
+      <Text style={globalStyle.title}>Settings ala</Text>
       <StatusBar style="auto" />
     </View>
   );

@@ -6,7 +6,7 @@ import Drawer from "./Drawer";
 import AuthStack from "./AuthStack";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { restoreToken } from "../features/auth/auth";
+import { restoreToken } from "../features/authReducer";
 import Splash from "../screens/Splash";
 
 export default function RootNavigator() {

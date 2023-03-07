@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Ruta } from 'src/ruta/entities/ruta.entity';
+import { S3Service } from 'src/s3/s3.service';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateCamionDto } from './dto/create-camion.dto';
@@ -24,6 +25,8 @@ export class CamionService {
 
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    private readonly s3Service: S3Service,
   ) {}
 
   async create(createCamionDto: CreateCamionDto) {
@@ -65,7 +68,17 @@ export class CamionService {
       },
     });
 
-    return { data, total };
+    const dataWithImageUrl = await Promise.all(
+      data.map(async (item) => {
+        const imageUrl = await this.s3Service.getSignedUrl(item.foto_id);
+        return {
+          ...item,
+          imageUrl,
+        };
+      }),
+    );
+
+    return { dataWithImageUrl, total };
   }
 
   async findOne(id: string) {

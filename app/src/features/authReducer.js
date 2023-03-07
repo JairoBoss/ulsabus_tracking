@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { showMessage } from "react-native-flash-message";
-import { login } from "../../services/authService";
+import { login } from "../services/authService";
 
 export const loginAsync = createAsyncThunk(
   "login/loginAsync",

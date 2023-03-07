@@ -11,7 +11,6 @@ import { passwordValidator } from "../../helpers/passwordValidator";
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { signIn } from "../../features/auth/auth";
 import { login } from "../../services/authService";
 
 export default function LoginScreen({ navigation }) {

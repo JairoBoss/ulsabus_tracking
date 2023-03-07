@@ -5,7 +5,7 @@ import { globalStyle } from "../styles/Global";
 import Button from "../components/Button";
 
 import { useDispatch } from "react-redux";
-import { signOut } from "../features/auth/auth";
+import { signOut } from "../features/authReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Profile() {

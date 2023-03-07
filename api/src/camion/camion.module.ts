@@ -7,6 +7,7 @@ import { RutaModule } from 'src/ruta/ruta.module';
 import { UserModule } from 'src/user/user.module';
 import { Camion } from './entities/camion.entity';
 import { CommonModule } from 'src/common/common.module';
+import { S3Module } from 'src/s3/s3.module';
 
 @Module({
   controllers: [CamionController],
@@ -16,7 +17,8 @@ import { CommonModule } from 'src/common/common.module';
     RutaModule,
     UserModule,
     TypeOrmModule.forFeature([Camion]),
-    CommonModule
+    CommonModule,
+    S3Module
   ],
 })
 export class CamionModule {}

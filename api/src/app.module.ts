@@ -13,6 +13,7 @@ import { UbicacionModule } from './ubicacion/ubicacion.module';
 import { IncidenteModule } from './incidente/incidente.module';
 import { GuardadoModule } from './guardado/guardado.module';
 import { S3Module } from './s3/s3.module';
+import { CoordenadasModule } from './coordenadas/coordenadas.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { S3Module } from './s3/s3.module';
     IncidenteModule,
     GuardadoModule,
     S3Module,
+    CoordenadasModule,
   ],
   controllers: [],
   providers: [],

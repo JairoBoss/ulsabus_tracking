@@ -1,30 +1,16 @@
-import React, { Profiler } from "react";
+import React from "react";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import Ayuda from "../screens/Ayuda";
 import Stack from "./Stack";
 import Privacidad from "../screens/Privacidad";
-import Home from "../screens/Home";
-import Inicio from "../screens/Inicio";
 import Horarios from "../screens/Horarios";
 import Rutas from "../screens/Rutas";
 import Profile from "../screens/Profile";
 import CerrarSesion from "../screens/CerrarSesion";
-import Settings from "../screens/Settings";
-import Camiones from "../screens/Camiones";
-import DetallesCamion from "../screens/DetallesCamion";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const DrawerNavigation = createDrawerNavigator();
 

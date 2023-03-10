@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Camion } from 'src/camion/entities/camion.entity';
+import { Coordenada } from 'src/coordenadas/entities/coordenada.entity';
 import { Guardado } from 'src/guardado/entities/guardado.entity';
 import { Parada } from 'src/parada/entities/parada.entity';
 import {
@@ -45,18 +46,11 @@ export class Ruta {
   hora_salida: string;
 
   @ApiProperty({
-    example: '20, 90',
-    description: 'Coordenadas de inicio de la ruta',
+    example: 'Esta ruta podras ir desde tu casa hasta tu otra casa',
+    description: 'Algun detalles de la ruta',
   })
-  @Column({ type: 'text' })
-  inicio: string;
-
-  @ApiProperty({
-    example: '90, 100',
-    description: 'Ultima parada del camion',
-  })
-  @Column({ type: 'text' })
-  fin: string;
+  @Column({ type: 'text', nullable: true })
+  detalle: string;
 
   @ApiProperty({
     example: 'UlsaBus Oaxaca',
@@ -67,7 +61,10 @@ export class Ruta {
 
   @OneToMany(() => Parada, (parada) => parada.ruta)
   parada: Parada;
-  
+
+  @OneToMany(() => Coordenada, (coordenada) => coordenada.ruta)
+  coordenada: Coordenada;
+
   @OneToMany(() => Camion, (camion) => camion.ruta)
   camion: Camion;
 

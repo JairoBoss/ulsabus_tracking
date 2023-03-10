@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Header from "../components/Header";
-import DetallesCamion, { DetallesCamionScreen } from "../screens/DetallesCamion";
+import DetallesCamion, {
+  DetallesCamionScreen,
+} from "../screens/DetallesCamion";
 import Settings from "../screens/Settings";
 
 import BottomTabNavigator from "./BottomTab";
@@ -32,7 +33,7 @@ export default function Stack() {
         <StackNavigator.Screen
           name="DetallesCamion"
           component={DetallesCamion}
-          options={DetallesCamionScreen} 
+          options={DetallesCamionScreen}
         />
         <StackNavigator.Screen name="Settings" component={Settings} />
       </StackNavigator.Group>

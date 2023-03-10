@@ -9,7 +9,7 @@ import { isUUID } from 'class-validator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Ruta } from 'src/ruta/entities/ruta.entity';
 import { Repository } from 'typeorm';
-import { CreateParadaDto } from './dto/create-parada.dto';
+import { CreateParadaDto, CreateParadaDtoArray } from './dto/create-parada.dto';
 import { UpdateParadaDto } from './dto/update-parada.dto';
 import { Parada } from './entities/parada.entity';
 
@@ -23,38 +23,34 @@ export class ParadaService {
     private readonly rutaRepository: Repository<Ruta>,
   ) {}
 
-  async create(createParadaDto: CreateParadaDto) {
-    try {
-      const { ruta_id } = createParadaDto;
-      const rutaFound = await this.rutaRepository.findOneBy({ id: ruta_id });
-      if (!rutaFound)
-        throw new NotFoundException(`Ruta ${ruta_id} no encontrada`);
+  async create(createParadaDtoArray: CreateParadaDtoArray) {
+    const { ruta_id, coordenadas } = createParadaDtoArray;
+    const rutaFound = await this.rutaRepository.findOneBy({ id: ruta_id });
+    if (!rutaFound)
+      throw new NotFoundException(`Ruta ${ruta_id} no encontrada`);
 
-      const parada = this.paradaRepository.create({
+    const nuevasCoordenadas = coordenadas.map((coordenada, index) =>
+      this.paradaRepository.create({
         ruta: rutaFound,
-        ...createParadaDto,
-      });
+        ...coordenada,
+      }),
+    );
 
-      await this.paradaRepository.save(parada);
+    await this.paradaRepository.save(nuevasCoordenadas);
 
-      return parada;
-    } catch (error) {
-      this.handleDBErrors(error);
-    }
+    return { message: 'Coordenadas creadas con exito' };
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+  async findAll(id: string) {
+    const rutaFound = await this.rutaRepository.findOneBy({ id });
 
-    const [data, total] = await this.paradaRepository.findAndCount({
-      take: limit,
-      skip: offset,
-      order: {
-        createdAt: 'ASC',
-      },
+    if (!rutaFound) throw new BadRequestException('Ruta no encontrada');
+
+    const coordenadas = await this.paradaRepository.find({
+      where: { ruta: { id } },
     });
 
-    return { data, total };
+    return coordenadas;
   }
 
   async findOne(term: string) {
@@ -96,7 +92,7 @@ export class ParadaService {
       });
     }
     await this.paradaRepository.save(paradaUpdate);
-    
+
     return paradaUpdate;
   }
 

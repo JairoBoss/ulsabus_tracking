@@ -98,4 +98,12 @@ export class CreateUserDto {
   @IsArray()
   @IsOptional()
   roles: string[];
+
+  @ApiProperty({
+    description: 'Numero de licencia del conductor',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
+  no_licencia: string;
 }

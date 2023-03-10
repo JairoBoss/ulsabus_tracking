@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ParadaService } from './parada.service';
-import { CreateParadaDto } from './dto/create-parada.dto';
+import { CreateParadaDto, CreateParadaDtoArray } from './dto/create-parada.dto';
 import { UpdateParadaDto } from './dto/update-parada.dto';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Parada } from './entities/parada.entity';
@@ -27,33 +27,21 @@ export class ParadaController {
   @ApiResponse({ status: 201, description: 'Parada creada', type: Parada })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
-  create(@Body() createParadaDto: CreateParadaDto) {
-    return this.paradaService.create(createParadaDto);
+  create(@Body() createParadaDtoArray: CreateParadaDtoArray) {
+    return this.paradaService.create(createParadaDtoArray);
   }
 
-  @Get()
+  @Get('id')
   @Auth()
   @ApiOkResponse({
-    description: 'Paradas paginadas',
+    description: 'Paradas por ruta',
     type: Parada,
     isArray: true,
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.paradaService.findAll(paginationDto);
-  }
-
-  @Get(':term')
-  @Auth()
-  @ApiOkResponse({
-    description: 'Parada encontrada por UUID, nombre o slug',
-    type: Parada,
-  })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 403, description: 'Forbidden' })
-  findOne(@Param('term') term: string) {
-    return this.paradaService.findOne(term);
+  findAll(@Param('id') id: string) {
+    return this.paradaService.findAll(id);
   }
 
   @Patch(':id')

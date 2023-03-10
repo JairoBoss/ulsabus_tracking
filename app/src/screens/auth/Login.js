@@ -9,7 +9,6 @@ import { theme } from "../../core/theme";
 import { emailValidator } from "../../helpers/emailValidator";
 import { passwordValidator } from "../../helpers/passwordValidator";
 import { showMessage } from "react-native-flash-message";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../services/authService";
 
@@ -32,13 +31,6 @@ export default function LoginScreen({ navigation }) {
     }
 
     try {
-      // const response = await login({
-      // email: email.value,
-      // password: password.value,
-      // }).unwrap();
-
-      // const value = "response?.token;";
-
       dispatch(login({ email: email.value, password: password.value }));
     } catch (error) {
       console.log(error);
@@ -50,10 +42,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    // <Background>
-
     <View style={{ backgroundColor: "#F5F5F5", flex: 1 }}>
-      {/* F9F9F9 */}
       <View
         style={{
           flex: 1,
@@ -106,17 +95,8 @@ export default function LoginScreen({ navigation }) {
         <Button mode="contained" onPress={onLoginPressed} loading={isLoading}>
           Ingresar
         </Button>
-        {/* <View style={styles.row}>
-          <Text>Don’t have an account? </Text>
-          <TouchableOpacity
-            onPress={() => navigation.replace("RegisterScreen")}
-          >
-            <Text style={styles.link}>Sign up</Text>
-          </TouchableOpacity>
-        </View> */}
       </View>
     </View>
-    // </Background>
   );
 }
 

@@ -94,6 +94,14 @@ export class User {
   id_card: String;
 
   @ApiProperty({
+    example: 'A3G00J7HA',
+    description: 'Numero de licencia del chofer',
+    nullable: true,
+  })
+  @Column({ type: 'text', nullable: true })
+  no_licencia: string;
+
+  @ApiProperty({
     example: 'true or false',
     description: 'Booleano',
   })

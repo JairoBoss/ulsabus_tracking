@@ -40,7 +40,7 @@ export class CamionController {
   })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
-  @Auth(ValidRoles.chofer)
+  @Auth()
   findAll(@Query() paginationDto: PaginationDto) {
     return this.camionService.findAll(paginationDto);
   }
@@ -49,6 +49,7 @@ export class CamionController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
   @Get(':id')
+  @Auth()
   findOne(@Param('id') id: string) {
     return this.camionService.findOne(id);
   }

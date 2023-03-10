@@ -23,18 +23,11 @@ export class CreateRutaDto {
   hora_salida: string;
 
   @ApiProperty({
-    description: 'Son las coordenadas en las cuales va a empezar su ruta',
-    nullable: false,
+    description: 'Detalle de la ruta',
+    nullable: true,
   })
   @IsString()
-  inicio: string;
-
-  @ApiProperty({
-    description: 'Son las ultimas coordenadas de la ruta',
-    nullable: false,
-  })
-  @IsString()
-  fin: string;
+  detalle: string;
 
   @ApiProperty({
     description: 'Nombre del consecionario (dueño del camion)',

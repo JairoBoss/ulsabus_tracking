@@ -1,5 +1,4 @@
 import "react-native-gesture-handler";
-import Constants from "expo-constants";
 import { Provider } from "react-redux";
 import { store } from "./src/app/store";
 import RootNavigator from "./src/navigation/RootNavigator";

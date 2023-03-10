@@ -1,17 +1,16 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import Home from "../screens/Home";
 import Profile from "../screens/Profile";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Colors } from "../constants/Color";
 import { Pressable } from "react-native";
 import Rutas from "../screens/Rutas";
-import { Foundation } from '@expo/vector-icons';
-const BottomTabNavigator = createBottomTabNavigator();
-import { Entypo } from '@expo/vector-icons';
+import { Foundation } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import Camiones from "../screens/Camiones";
+
+const BottomTabNavigator = createBottomTabNavigator();
 
 export default function BottomTab({ navigation }) {
   return (
@@ -32,7 +31,12 @@ export default function BottomTab({ navigation }) {
               color={Colors.secondary}
               style={{ marginLeft: 15 }}
             /> */}
-            <Entypo name="menu" size={30}    style={{ marginLeft: 15 }} color="black" />
+            <Entypo
+              name="menu"
+              size={30}
+              style={{ marginLeft: 15 }}
+              color="black"
+            />
           </Pressable>
         ),
       }}
@@ -42,12 +46,12 @@ export default function BottomTab({ navigation }) {
         component={Camiones}
         options={{
           tabBarIcon: ({ color, focused }) => (
-            // <FontAwesome name="home" size={30} color={color} /> 
+            // <FontAwesome name="home" size={30} color={color} />
             <MaterialCommunityIcons name="bus-stop" size={44} color={color} />
           ),
         }}
       />
-      
+
       <BottomTabNavigator.Screen
         name="Guardados"
         component={Rutas}

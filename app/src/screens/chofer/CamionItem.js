@@ -12,7 +12,9 @@ export default function CamionItem({ data }) {
   return (
     <TouchableOpacity
       activeOpacity={0.6}
-      onPress={() => navigation.navigate("DetalleRuta", { id: data?.ruta?.id })}
+      onPress={() =>
+        navigation.navigate("DetalleRuta", { id: data?.ruta?.id, data })
+      }
       style={[styles.doctorItem]}
     >
       <Image style={styles.imgDoctor} source={{ uri: data.imageUrl }} />

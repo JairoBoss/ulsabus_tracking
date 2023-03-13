@@ -6,7 +6,7 @@ export const useSocket = (serverPath) => {
   const { userToken } = useSelector((state) => state.auth);
   const manager = useMemo(
     () =>
-      new Manager(`http://192.168.0.2:8080/bus-tracking/socket.io.js`, {
+      new Manager(`http://175.1.38.176:8080/bus-tracking/socket.io.js`, {
         path: "/bus-tracking",
         extraHeaders: {
           holaMundo: "mundo",

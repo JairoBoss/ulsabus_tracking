@@ -40,7 +40,7 @@ export default function IniciarRuta({ navigation }) {
                 style={styles.image}
                 source={{
                   uri: "https://cdn-icons-png.flaticon.com/512/4635/4635340.png",
-                }} // reemplaza con la URL de tu imagen
+                }}
               />
             </View>
             <View style={styles.textContainer}>

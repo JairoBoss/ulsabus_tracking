@@ -21,7 +21,7 @@ export class WebSocketServerGateway {
   async handleConnection(client: Socket) {
     try {
       const request = client.handshake.headers?.dataconnection as string;
-      const user = this.jwtService.verify(request);
+      this.jwtService.verify(request);
       console.log(`Se ah conectado un nuevo usuario`);
     } catch (error) {
       console.log(error);
@@ -34,7 +34,6 @@ export class WebSocketServerGateway {
   async handleDriverMessage(client: Socket, payload: any) {
     console.log(payload);
     const { id, ...coordinates } = payload;
-
     // Almacenar las coordenadas
 
     // Enviar las coordenadas a todos los clientes conectados a la misma ruta

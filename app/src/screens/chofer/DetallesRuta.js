@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as Location from "expo-location";
 import { View, Text, StyleSheet, Platform, Image } from "react-native";
 import { useSocket } from "../../hooks/useSocket";
@@ -16,8 +16,6 @@ import { ScaledSheet } from "react-native-size-matters";
 import Colors from "../../utils/colors";
 import { scaleHeight, scaleWidth } from "../../utils/size";
 import FONTS from "../../utils/fonts";
-import TopicItem from "../../components/TopicItem";
-import SvgDelete from "../../svgs/SvgDelete";
 import SvgUserLocation from "../../svgs/SvgUserLocation";
 
 export default function DetallesRuta({ route }) {
@@ -29,6 +27,8 @@ export default function DetallesRuta({ route }) {
   const [errorMsg, setErrorMsg] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const bottomSheetRef = useRef(null);
+  const snapPoints = ["15%", "50%"];
 
   useEffect(() => {
     dispatch(getAllCoordenadas(id));
@@ -45,7 +45,8 @@ export default function DetallesRuta({ route }) {
           longitude,
         });
       }
-    }, 1000);
+    // }, 1000);
+    }, 500);
     // Limpiar el intervalo cuando se desmonta el componente
     return () => clearInterval(interval);
   }, [latitude, longitude]);
@@ -60,8 +61,8 @@ export default function DetallesRuta({ route }) {
       {
         accuracy: Location.Accuracy.BestForNavigation,
         timeInterval: 1000,
-        distanceInterval: 10,
-        // distanceInterval: 1,
+        // distanceInterval: 10,
+        distanceInterval: 1,
       },
       (location) => {
         setLatitude(location.coords.latitude);
@@ -215,9 +216,30 @@ export default function DetallesRuta({ route }) {
           </Marker>
         ) : null}
       </MapView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        initialSnapIndex={0}
+        zIndex={1}
+      >
+        <BottomSheetScrollView
+          snapPoints={["50%", "80%"]}
+          initialSnap={0}
+        ></BottomSheetScrollView>
+      </BottomSheet>
     </>
   );
 }
+
+function DetallesRutaScreen({ route }) {
+  const { data } = route.params;
+
+  return {
+    headerTitle: `${data.ruta.nombre}`,
+  };
+}
+
+export { DetallesRutaScreen };
 
 const styles = ScaledSheet.create({
   bottomSheet: {

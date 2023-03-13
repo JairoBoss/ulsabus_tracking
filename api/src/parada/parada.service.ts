@@ -46,9 +46,27 @@ export class ParadaService {
 
     if (!rutaFound) throw new BadRequestException('Ruta no encontrada');
 
-    const coordenadas = await this.paradaRepository.find({
-      where: { ruta: { id } },
-    });
+    // const coordenadas = await this.paradaRepository.find({
+    //   where: { ruta: { id } },
+    // });
+
+    const queryBuilder = this.paradaRepository.createQueryBuilder('parada');
+
+    // const coordenadas = await queryBuilder
+    //   .select(['latitud', 'longitud'])
+    //   .where('ruta_id = :id', { id })
+    //   .getRawMany();
+
+    const coordenadasText = await queryBuilder
+      .select('Parada.latitud, Parada.longitud')
+      .where('ruta_id = :id', { id })
+      .getRawMany();
+
+    // Convertir las coordenadas en números
+    const coordenadas = coordenadasText.map((coordenada) => ({
+      latitude: Number(coordenada.latitud),
+      longitude: Number(coordenada.longitud),
+    }));
 
     return coordenadas;
   }

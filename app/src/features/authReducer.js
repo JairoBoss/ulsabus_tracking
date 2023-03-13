@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { showMessage } from "react-native-flash-message";
-import { login } from "../services/authService";
+import { login, validateToken } from "../services/authService";
 
 export const loginAsync = createAsyncThunk(
   "login/loginAsync",
@@ -53,13 +53,13 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         const { token, ...userData } = action.payload;
-
+        state.currentUser = userData;
         state.userToken = token;
         state.isLoading = false;
 
         saveTokenToAsyncStorage(token).then(() => {
           showMessage({
-            message: `Bienvenido ${action.payload.userData.name}`,
+            message: `Bienvenido ${userData.name}`,
             type: "success",
           });
         });
@@ -67,6 +67,22 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state) => {
         showMessage({
           message: "Datos no válidos",
+          type: "warning",
+        });
+        state.isLoading = false;
+      });
+
+    builder
+      .addCase(validateToken.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(validateToken.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentUser = action.payload;
+      })
+      .addCase(validateToken.rejected, (state) => {
+        showMessage({
+          message: "Error",
           type: "warning",
         });
         state.isLoading = false;

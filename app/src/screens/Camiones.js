@@ -18,6 +18,7 @@ export default function Camiones({ navigation }) {
 
   const getCamiones = () => {
     dispatch(getAllBuses());
+    console.log(camiones)
   };
 
   useEffect(() => {
@@ -31,9 +32,9 @@ export default function Camiones({ navigation }) {
       {!fetched ? null : (
         <>
           <Text />
-          <CamionItem data={camiones.dataWithImageUrl[0]} />
-          <CamionItem data={camiones.dataWithImageUrl[0]} />
-          <CamionItem data={camiones.dataWithImageUrl[0]} />
+          <CamionItem data={camiones?.dataWithImageUrl[0]} />
+          <CamionItem data={camiones?.dataWithImageUrl[0]} />
+          <CamionItem data={camiones?.dataWithImageUrl[0]} />
         </>
       )}
     </View>

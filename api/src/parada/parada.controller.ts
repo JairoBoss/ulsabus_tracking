@@ -31,15 +31,13 @@ export class ParadaController {
     return this.paradaService.create(createParadaDtoArray);
   }
 
-  @Get('id')
+  @Get(':id')
   @Auth()
   @ApiOkResponse({
     description: 'Paradas por ruta',
     type: Parada,
     isArray: true,
   })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 403, description: 'Forbidden' })
   findAll(@Param('id') id: string) {
     return this.paradaService.findAll(id);
   }

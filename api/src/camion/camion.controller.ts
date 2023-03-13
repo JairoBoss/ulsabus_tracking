@@ -45,6 +45,13 @@ export class CamionController {
     return this.camionService.findAll(paginationDto);
   }
 
+  @ApiResponse({ status: 200, description: 'Camion obtenido por el id del chofer', type: Camion })
+  @Get('chofer/:id')
+  @Auth()
+  findOneByChofer(@Param('id') id: string) {
+    return this.camionService.findOneByChofer(id);
+  }
+
   @ApiResponse({ status: 200, description: 'Camion obtenido por UUID, nombre o slug', type: Camion })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden' })

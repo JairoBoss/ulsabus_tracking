@@ -44,9 +44,26 @@ export class CoordenadasService {
 
     if (!rutaFound) throw new BadRequestException('Ruta no encontrada');
 
-    const coordenadas = await this.coordenadasRepository.find({
-      where: { ruta: { id } },
-    });
+    const queryBuilder =
+      this.coordenadasRepository.createQueryBuilder('coordenada');
+
+    // const coordenadas = await queryBuilder
+    //   .select(
+    //     'Coordenada.latitud AS latitude, Coordenada.longitud AS longitude',
+    //   )
+    //   .where('ruta_id = :id', { id })
+    //   .getRawMany();
+
+    const coordenadasText = await queryBuilder
+      .select('Coordenada.latitud, Coordenada.longitud')
+      .where('ruta_id = :id', { id })
+      .getRawMany();
+
+    // Convertir las coordenadas en números
+    const coordenadas = coordenadasText.map((coordenada) => ({
+      latitude: Number(coordenada.latitud),
+      longitude: Number(coordenada.longitud),
+    }));
 
     return coordenadas;
   }

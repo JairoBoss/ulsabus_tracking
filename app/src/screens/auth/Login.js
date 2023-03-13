@@ -32,6 +32,7 @@ export default function LoginScreen({ navigation }) {
 
     try {
       dispatch(login({ email: email.value, password: password.value }));
+      
     } catch (error) {
       console.log(error);
       return showMessage({

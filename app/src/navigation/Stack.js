@@ -3,7 +3,7 @@ import DetallesCamion, {
   DetallesCamionScreen,
 } from "../screens/DetallesCamion";
 import Settings from "../screens/Settings";
-
+1
 import BottomTabNavigator from "./BottomTab";
 
 const StackNavigator = createStackNavigator();

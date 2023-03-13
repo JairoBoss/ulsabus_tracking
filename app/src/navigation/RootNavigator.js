@@ -8,9 +8,12 @@ import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { restoreToken } from "../features/authReducer";
 import Splash from "../screens/Splash";
-
+import { validateToken } from "../services/authService";
+import ChoferStack from "./chofer/ChoferStack"
 export default function RootNavigator() {
-  const { userToken, loading } = useSelector((state) => state.auth);
+  const { userToken, loading, currentUser } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,6 +21,7 @@ export default function RootNavigator() {
   }, []);
 
   const getValue = async () => {
+    dispatch(validateToken());
     try {
       const value = await AsyncStorage.getItem("@token");
       if (value !== null) {
@@ -29,9 +33,17 @@ export default function RootNavigator() {
     } catch (error) {
       console.log({ error: error });
     }
+    // console.log(currentUser?.roles.includes('chofer'));
   };
 
   if (loading) return <Splash />;
+
+  if (currentUser?.roles.includes("chofer"))
+    return (
+      <NavigationContainer>
+        <ChoferStack />
+      </NavigationContainer>
+    );
 
   return (
     <NavigationContainer>

@@ -14,6 +14,7 @@ import { IncidenteModule } from './incidente/incidente.module';
 import { GuardadoModule } from './guardado/guardado.module';
 import { S3Module } from './s3/s3.module';
 import { CoordenadasModule } from './coordenadas/coordenadas.module';
+import { WebSocketServerModule } from './web-socket-server/web-socket-server.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { CoordenadasModule } from './coordenadas/coordenadas.module';
     GuardadoModule,
     S3Module,
     CoordenadasModule,
+    WebSocketServerModule,
   ],
   controllers: [],
   providers: [],

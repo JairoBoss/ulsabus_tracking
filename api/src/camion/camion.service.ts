@@ -89,6 +89,24 @@ export class CamionService {
     return camion;
   }
 
+  async findOneByChofer(id: string) {
+    const camiones = await this.camionRepository.findBy({ user: { id } });
+
+    if (!camiones) throw new NotFoundException(`Camiones no encontrados`);
+
+    const dataWithImageUrl = await Promise.all(
+      camiones.map(async (item) => {
+        const imageUrl = await this.s3Service.getSignedUrl(item.foto_id);
+        return {
+          ...item,
+          imageUrl,
+        };
+      }),
+    );
+
+    return dataWithImageUrl;
+  }
+
   async update(id: string, updateCamionDto: UpdateCamionDto) {
     const { ruta_id, user_id } = updateCamionDto;
 

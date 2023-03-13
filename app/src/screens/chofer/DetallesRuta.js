@@ -1,13 +1,10 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { View, Text, Platform, Image, StyleSheet } from "react-native";
-import { ScaledSheet } from "react-native-size-matters";
-import Colors from "../utils/colors";
-import { scaleHeight, scaleWidth } from "../utils/size";
-import FONTS from "../utils/fonts";
-import TopicItem from "../components/TopicItem";
-import SvgDelete from "../svgs/SvgDelete";
-import SvgUserLocation from "../svgs/SvgUserLocation";
+import React, { useEffect, useState } from "react";
+import * as Location from "expo-location";
+import { View, Text, StyleSheet, Platform, Image } from "react-native";
+import { useSocket } from "../../hooks/useSocket";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCoordenadas } from "../../services/coordenadas";
+import { getAllEstaciones } from "../../services/estaciones";
 import MapView, {
   Marker,
   PROVIDER_GOOGLE,
@@ -15,67 +12,63 @@ import MapView, {
   Polyline,
 } from "react-native-maps";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { useSocket } from "../hooks/useSocket";
-import { getAllCoordenadas } from "../services/coordenadas";
-import { getAllEstaciones } from "../services/estaciones";
-import { useDispatch, useSelector } from "react-redux";
+import { ScaledSheet } from "react-native-size-matters";
+import Colors from "../../utils/colors";
+import { scaleHeight, scaleWidth } from "../../utils/size";
+import FONTS from "../../utils/fonts";
+import TopicItem from "../../components/TopicItem";
+import SvgDelete from "../../svgs/SvgDelete";
+import SvgUserLocation from "../../svgs/SvgUserLocation";
 
-export const eventLocation = [
-  {
-    id: 0,
-    coordinate: { latitude: 17.019876556449557, longitude: -96.72090768814088 },
-  },
-  {
-    id: 1,
-    coordinate: { latitude: 17.019876556449557, longitude: -96.72090768814088 },
-  },
-  {
-    id: 2,
-    coordinate: { latitude: 17.019876556449557, longitude: -96.72090768814088 },
-  },
-  {
-    id: 3,
-    coordinate: { latitude: 17.019876556449557, longitude: -96.72090768814088 },
-  },
-  {
-    id: 4,
-    coordinate: { latitude: 17.019876556449557, longitude: -96.72090768814088 },
-  },
-];
-
-export const initialLatitudeDelta = 0.01202;
-export const initialLongitudeDelta = 0.00081;
-
-export default function DetallesCamion({ route }) {
-  const { data } = route.params;
+export default function DetallesRuta({ route }) {
+  const { id } = route.params;
+  const dispatch = useDispatch();
   const { coordenadas } = useSelector((state) => state.coordenadas);
   const { paradas } = useSelector((state) => state.estaciones);
-  const dispatch = useDispatch();
-  const [coordenadasCamion, setCoordenadasCamion] = useState(null);
-  const [coordenadasSalle, setCoordenadas] = useState({
-    latitude: 17.022851627764066,
-    longitude: -96.72989845275879,
-  });
   const { socket, online } = useSocket(`rutaxd`);
-
-  const bottomSheetRef = useRef(null);
-  const snapPoints = ["15%", "50%"];
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   useEffect(() => {
-    dispatch(getAllCoordenadas(data.ruta.id));
-    dispatch(getAllEstaciones(data.ruta.id));
+    dispatch(getAllCoordenadas(id));
+    dispatch(getAllEstaciones(id));
+    getLocation();
   }, []);
 
   useEffect(() => {
-    socket.emit("subscribe", { rutaid: data.ruta.id });
+    const interval = setInterval(() => {
+      if (latitude && longitude) {
+        socket.emit("ruta", {
+          id,
+          latitude,
+          longitude,
+        });
+      }
+    }, 1000);
+    // Limpiar el intervalo cuando se desmonta el componente
+    return () => clearInterval(interval);
+  }, [latitude, longitude]);
 
-    // Escuchar el evento "nuevasCoordenadas"
-    socket.on("nuevasCoordenadas", (data) => {
-      // console.log("Nuevas coordenadas:", data.coordinates);
-      setCoordenadasCamion(data.coordinates);
-      // Actualizar el estado con las nuevas coordenadas aquí
-    });
-  }, [socket, data.ruta.id]);
+  async function getLocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Error, tienes que aceptar el permiso de ubicacion");
+      return;
+    }
+    let location = await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.BestForNavigation,
+        timeInterval: 1000,
+        distanceInterval: 10,
+        // distanceInterval: 1,
+      },
+      (location) => {
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude);
+      }
+    );
+  }
 
   const mapStyle = [
     {
@@ -173,9 +166,9 @@ export default function DetallesCamion({ route }) {
   return (
     <>
       <MapView
+        showsUserLocation={false}
         provider={PROVIDER_GOOGLE}
         style={styles.mapView}
-        showsUserLocation={true}
         region={{
           latitude: 17.0262,
           longitude: -96.7327,
@@ -198,16 +191,18 @@ export default function DetallesCamion({ route }) {
           strokeColor="#030507"
           strokeWidth={5}
         />
-
         {paradas.map((coordenadas) => (
           <Marker coordinate={coordenadas} tracksViewChanges={false}>
             <SvgUserLocation />
           </Marker>
         ))}
 
-        {coordenadasCamion ? (
+        {latitude && longitude ? (
           <Marker
-            coordinate={coordenadasCamion}
+            coordinate={{
+              latitude,
+              longitude,
+            }}
             tracksViewChanges={true}
             style={{ width: 50, height: 50 }}
           >
@@ -219,113 +214,10 @@ export default function DetallesCamion({ route }) {
             />
           </Marker>
         ) : null}
-
-        <Marker
-          coordinate={eventLocation[3].coordinate}
-          tracksViewChanges={true}
-          style={{ width: 50, height: 50 }}
-        >
-          <Image
-            source={{
-              uri: "https://cdni.iconscout.com/illustration/premium/thumb/school-3862334-3213885.png",
-            }}
-            style={{ flex: 1, width: 50, height: 50 }}
-          />
-        </Marker>
       </MapView>
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        initialSnapIndex={0}
-        zIndex={1}
-      >
-        <BottomSheetScrollView snapPoints={["50%", "80%"]} initialSnap={0}>
-          <View style={styles.bottomSheet}>
-            <View style={styles.headerView}>
-              <View style={styles.header}>
-                <View style={styles.setRow}>
-                  <Text style={styles.doctorName}>{data.ruta.nombre}</Text>
-
-                  <View style={styles.rateView}>
-                    <Text style={styles.specialized}>
-                      Placas: {data.placas}
-                    </Text>
-                  </View>
-                  <Text style={styles.txtTitle}>
-                    Ultima estacion: {"{parada.nombre}"}
-                  </Text>
-                </View>
-                <Image
-                  style={styles.imgDoctor}
-                  source={{ uri: data.imageUrl }}
-                />
-              </View>
-              {/* <View style={styles.buttonsView}></View> */}
-            </View>
-            <Text />
-            <View style={styles.headerView}>
-              <View style={styles.header}>
-                <View
-                  style={{
-                    margin: "2%",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Image
-                      source={{
-                        uri: "https://avatarfiles.alphacoders.com/128/thumb-128984.png",
-                      }}
-                      style={{
-                        width: 50,
-                        height: 50,
-                        marginRight: 10,
-                        borderRadius: 25,
-                        marginRight: "5%",
-                        marginLeft: "6%",
-                      }}
-                    />
-                    <View>
-                      <Text style={{ fontWeight: "bold" }}>
-                        Jairo Esteban Martinez.
-                      </Text>
-                      <Text>18 anos</Text>
-                    </View>
-                  </View>
-                  <View>
-                    <Text>5 estrellas</Text>
-                    <Text>80 viajes</Text>
-                  </View>
-                </View>
-              </View>
-              {/* <View style={styles.buttonsView}></View> */}
-            </View>
-            <Text />
-            <TopicItem
-              Svg={
-                <SvgDelete width={18} height={20} color={Colors.secondRed} />
-              }
-              title={"Reportar"}
-              onPress={() => console.log("Reportar")}
-            />
-          </View>
-        </BottomSheetScrollView>
-      </BottomSheet>
     </>
   );
 }
-
-function DetallesCamionScreen({ route }) {
-  const { data } = route.params;
-
-  return {
-    headerTitle: `${data.ruta.nombre}`,
-  };
-}
-
-export { DetallesCamionScreen };
 
 const styles = ScaledSheet.create({
   bottomSheet: {

@@ -10,4 +10,11 @@ export const login = createAsyncThunk(
   }
 );
 
+export const validateToken = createAsyncThunk(
+  `${prefix}/validate`,
+  async () => {
+    return (await httpClient.post(`${prefix}/validate`)).data;
+  }
+);
+
 // Colocar ruta para validar/revalidar token
